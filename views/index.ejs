@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BrainSync Meditation Guide</title>
+    
+    <!-- Dependencies -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@0.263.1"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r146/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+
+    <style>
+        body {
+            margin: 0;
+            overflow-x: hidden;
+            font-family: 'Poppins', sans-serif;
+            background: url('https://img.lovepik.com/background/20211021/large/lovepik-artificial-intelligence-brain-technology-background-image_400608492.jpg') no-repeat center center fixed;
+            background-size: cover;
+            height: 100vh;
+        }
+
+        canvas#bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+
+        .content-container {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .fade-in {
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+
+<body class="fade-in">
+    <canvas id="bg"></canvas>
+    
+    <div class="content-container">
+        <!-- Glass Navbar -->
+        <nav class="fixed top-0 z-50 w-full backdrop-blur-lg bg-white/5 border-b border-white/10">
+            <div class="container mx-auto px-6 py-3 flex items-center justify-between">
+                <h1 class="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
+                    <i data-lucide="brain" class="inline-block mr-2"></i>BrainSync
+                </h1>
+                <div class="flex items-center gap-6">
+                    <a href="/index" class="text-gray-300 hover:text-white transition-all flex items-center gap-1">
+                        <i data-lucide="home" class="w-5 h-5"></i>Home
+                    </a>
+                    <a href="/profile" class="text-gray-300 hover:text-white transition-all flex items-center gap-1">
+                        <i data-lucide="user" class="w-5 h-5"></i>Profile
+                    </a>
+                    <div class="relative group">
+                        <button class="text-gray-300 hover:text-white transition-all flex items-center gap-1">
+                            <i data-lucide="music" class="w-5 h-5"></i>Session
+                        </button>
+                        <div class="absolute hidden group-hover:block right-0 mt-2 w-48 bg-white/5 backdrop-blur-lg border border-white/10 rounded-lg p-2">
+                            <a href="/session?time=morning" class="block px-4 py-2 hover:bg-white/5 rounded-md">Morning</a>
+                            <a href="/session?time=afternoon" class="block px-4 py-2 hover:bg-white/5 rounded-md">Afternoon</a>
+                            <a href="/session?time=evening" class="block px-4 py-2 hover:bg-white/5 rounded-md">Evening</a>
+                        </div>
+                    </div>
+                    <a href="/login" class="text-gray-300 hover:text-red-400 transition-all flex items-center gap-1">
+                        <i data-lucide="log-out" class="w-5 h-5"></i>Logout
+                    </a>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <div class="relative z-10 flex flex-col items-center justify-center w-full mt-32">
+            <h1 class="mb-10 text-6xl font-extrabold text-center bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
+                BrainSync Meditation Guide
+            </h1>
+
+            <!-- Form -->
+            <form id="meditationForm" action="/index" method="POST" class="w-full max-w-lg backdrop-blur-lg bg-white/5 p-8 rounded-3xl border border-white/10 shadow-2xl space-y-6">
+                <!-- Stress Level Input -->
+                <div class="relative group">
+                    <div class="flex items-center mb-2">
+                        <i data-lucide="heart" class="w-6 h-6 mr-2 text-cyan-400"></i>
+                        <label for="stressLevel" class="text-lg font-medium text-cyan-300">Stress Level (1-10)</label>
+                    </div>
+                    <input type="number" id="stressLevel" name="stressLevel" min="1" max="10" required
+                          class="w-full px-6 py-4 bg-white/5 border-2 border-white/10 rounded-xl focus:border-cyan-400/50 focus:ring-0 transition-all placeholder-gray-400 text-white">
+                </div>
+
+                <!-- Meditation Time Select -->
+                <div class="relative group">
+                    <div class="flex items-center mb-2">
+                        <i data-lucide="calendar" class="w-6 h-6 mr-2 text-purple-400"></i>
+                        <label for="meditationTime" class="text-lg font-medium text-purple-300">Preferred Meditation Time</label>
+                    </div>
+                    <select id="meditationTime" name="meditationTime" required
+                            class="w-full px-6 py-4 bg-white/5 border-2 border-white/10 rounded-xl focus:border-cyan-400/50 focus:ring-0 transition-all text-black">
+                        <option value="morning">Morning</option>
+                        <option value="afternoon">Afternoon</option>
+                        <option value="evening">Evening</option>
+                    </select>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="w-full px-8 py-4 font-semibold text-white bg-gradient-to-r from-cyan-500 to-blue-600 rounded-xl hover:shadow-2xl hover:shadow-cyan-400/20 transition-all flex items-center justify-center gap-2">
+                    <i data-lucide="send" class="w-6 h-6"></i>
+                    Get Meditation Plan
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Three.js Configuration
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ 
+            canvas: document.getElementById('bg'),
+            alpha: true,
+            antialias: true
+        });
+
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(window.devicePixelRatio);
+
+        // Lighting Configuration
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+        scene.add(ambientLight);
+        const pointLight = new THREE.PointLight(0xffffff, 1, 100);
+        pointLight.position.set(10, 10, 10);
+        scene.add(pointLight);
+
+        // Particle System
+        const particlesGeometry = new THREE.BufferGeometry();
+        const particlesCount = 1500;
+        const posArray = new Float32Array(particlesCount * 3);
+        
+        for(let i = 0; i < particlesCount * 3; i++) {
+            posArray[i] = (Math.random() - 0.5) * 10;
+        }
+
+        particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+        
+        const particlesMaterial = new THREE.PointsMaterial({
+            size: 0.1,
+            color: 0x87CEEB,
+            transparent: true,
+            opacity: 0.8,
+            blending: THREE.AdditiveBlending
+        });
+
+        const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
+        scene.add(particlesMesh);
+
+        camera.position.z = 5;
+
+        // Animation Loop
+        function animate() {
+            requestAnimationFrame(animate);
+            particlesMesh.rotation.x += 0.001;
+            particlesMesh.rotation.y += 0.0015;
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        // GSAP Animations
+        gsap.from("h1, form", {
+            duration: 0.8,
+            y: 40,
+            opacity: 0,
+            stagger: 0.3,
+            ease: "power3.out"
+        });
+
+        // Initialize Icons
+        document.addEventListener("DOMContentLoaded", () => {
+            lucide.createIcons();
+        });
+
+        // Dropdown Logic
+        document.addEventListener("DOMContentLoaded", function () {
+            const dropdownBtn = document.querySelector(".group button");
+            const dropdownMenu = document.querySelector(".group .absolute");
+
+            dropdownBtn.addEventListener("click", function (event) {
+                event.stopPropagation();
+                dropdownMenu.classList.toggle("hidden");
+            });
+
+            document.addEventListener("click", function (event) {
+                if (!dropdownBtn.contains(event.target)) {
+                    dropdownMenu.classList.add("hidden");
+                }
+            });
+        });
+
+        // Resize Handler
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth/window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+    </script>
+</body>
+</html>

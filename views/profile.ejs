@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - BrainSync</title>
+    
+    <!-- Dependencies -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@0.263.1"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r146/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+
+    <style>
+        body {
+            margin: 0;
+            overflow-x: hidden;
+            font-family: 'Poppins', sans-serif;
+            background: url('https://img.lovepik.com/background/20211021/large/lovepik-artificial-intelligence-brain-technology-background-image_400608492.jpg') no-repeat center center fixed;
+            background-size: cover;
+            overflow-y: auto;
+            height: 100vh;
+        }
+
+        canvas#bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+
+        .content-container {
+            position: relative;
+            min-height: 100vh;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="bg"></canvas>
+    
+    <div class="content-container">
+        <nav class="fixed top-0 z-50 w-full backdrop-blur-lg bg-white/5 border-b border-white/10">
+            <div class="container mx-auto px-6 py-3 flex items-center justify-between">
+                <h1 class="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
+                    <i data-lucide="brain" class="inline-block mr-2"></i>BrainSync Pro
+                </h1>
+                
+                <div class="flex items-center space-x-6">
+                    <% if (user && user.role === 'admin') { %>
+                    <a href="/admin/users" class="flex items-center group text-rose-300 hover:text-rose-400">
+                        <i data-lucide="shield" class="w-5 h-5 mr-1 group-hover:animate-pulse"></i>
+                        <span>Admin</span>
+                    </a>
+                    <% } %>
+                </div>
+            </div>
+        </nav>
+
+        <div class="relative z-10 container mx-auto px-4 py-24">
+            <div class="max-w-3xl mx-auto bg-white/5 backdrop-blur-xl rounded-3xl border border-white/10 shadow-2xl overflow-hidden">
+                <div class="p-8 bg-gradient-to-r from-purple-500/20 to-blue-500/20">
+                    <div class="flex flex-col items-center">
+                        <h1 class="text-4xl font-bold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
+                            <%= user.username %>
+                        </h1>
+                    </div>
+                </div>
+
+                <div class="p-8 space-y-6">
+                    <div class="flex items-center p-6 bg-white/5 rounded-xl border border-white/10 hover:border-cyan-400/40 transition-all group">
+                        <i data-lucide="mail" class="w-8 h-8 mr-4 text-cyan-400"></i>
+                        <div>
+                            <p class="text-sm text-cyan-300">Email Address</p>
+                            <p class="text-lg font-medium text-white"><%= user.email %></p>
+                        </div>
+                    </div>
+
+                    <% const details = [
+                        { icon: 'phone', label: 'Phone', value: user.phone },
+                        { icon: 'map-pin', label: 'Location', value: user.location },
+                        { icon: 'venetian-mask', label: 'Gender', value: user.gender }
+                    ]; %>
+                    <% details.forEach(detail => { %>
+                    <div class="flex items-center p-6 bg-white/5 rounded-xl border border-white/10 hover:bg-white/10 transition-all cursor-pointer">
+                        <i data-lucide="<%= detail.icon %>" class="w-8 h-8 mr-4 text-purple-400"></i>
+                        <div>
+                            <p class="text-sm text-purple-300"><%= detail.label %></p>
+                            <p class="text-lg font-medium text-white"><%= detail.value %></p>
+                        </div>
+                    </div>
+                    <% }); %>
+                </div>
+
+                <div class="p-8 border-t border-white/10">
+                    <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                        <a href="/index" class="flex items-center justify-center p-4 bg-white/5 rounded-xl border border-white/10 hover:bg-white/10 transition-all">
+                            <i data-lucide="home" class="w-6 h-6 mr-2 text-blue-400"></i>
+                            <span class="text-white">Home</span>
+                        </a>
+
+                        <a href="/edit-profile" class="flex items-center justify-center p-4 bg-white/5 rounded-xl border border-white/10 hover:bg-white/10 transition-all">
+                            <i data-lucide="screwdriver" class="w-6 h-6 mr-2 text-green-400"></i>
+                            <span class="text-white">Settings</span>
+                        </a>
+
+                        <a href="/about" class="flex items-center justify-center p-4 bg-white/5 rounded-xl border border-white/10 hover:bg-white/10 transition-all">
+                            <i data-lucide="info" class="w-6 h-6 mr-2 text-purple-400"></i>
+                            <span class="text-white">About</span>
+                        </a>
+
+                        <a href="/session" class="flex items-center justify-center p-4 bg-white/5 rounded-xl border border-white/10 hover:bg-white/10 transition-all">
+                            <i data-lucide="music" class="w-6 h-6 mr-2 text-pink-400"></i>
+                            <span class="text-white">Session</span>
+                        </a>
+
+                        <a href="/login" class="flex items-center justify-center p-4 bg-white/5 rounded-xl border border-white/10 hover:bg-white/10 transition-all">
+                            <i data-lucide="log-out" class="w-6 h-6 mr-2 text-red-400"></i>
+                            <span class="text-white">Logout</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ 
+            canvas: document.getElementById('bg'),
+            alpha: true,
+            antialias: true
+        });
+
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(window.devicePixelRatio);
+
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+        scene.add(ambientLight);
+        const pointLight = new THREE.PointLight(0xffffff, 1, 100);
+        pointLight.position.set(10, 10, 10);
+        scene.add(pointLight);
+
+        const particlesGeometry = new THREE.BufferGeometry();
+        const particlesCount = 1500;
+        const posArray = new Float32Array(particlesCount * 3);
+        
+        for(let i = 0; i < particlesCount * 3; i++) {
+            posArray[i] = (Math.random() - 0.5) * 10;
+        }
+
+        particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+        
+        const particlesMaterial = new THREE.PointsMaterial({
+            size: 0.1,
+            color: 0x87CEEB,
+            transparent: true,
+            opacity: 0.8,
+            blending: THREE.AdditiveBlending
+        });
+
+        const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
+        scene.add(particlesMesh);
+
+        camera.position.z = 5;
+
+        function animate() {
+            requestAnimationFrame(animate);
+            particlesMesh.rotation.x += 0.001;
+            particlesMesh.rotation.y += 0.0015;
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        gsap.from("nav", { 
+            duration: 1, 
+            y: -50, 
+            opacity: 0, 
+            ease: "power4.out" 
+        });
+
+        document.addEventListener("DOMContentLoaded", () => {
+            lucide.createIcons();
+        });
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth/window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+    </script>
+</body>
+</html>

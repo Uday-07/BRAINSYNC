@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BrainSync App - Edit Profile</title>
+    
+    <!-- External Dependencies -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+
+    <!-- Custom Styles -->
+    <style>
+        .custom-bg {
+            background-image: 
+                linear-gradient(to right, rgba(45, 212, 191, 0.85), rgba(59, 130, 246, 0.85), rgba(79, 70, 229, 0.85)),
+                url('https://img.lovepik.com/background/20211021/large/lovepik-artificial-intelligence-brain-technology-background-image_400608492.jpg');
+            background-size: cover;
+            background-position: center;
+            background-blend-mode: overlay;
+            background-attachment: fixed;
+            min-height: 100vh;
+        }
+
+        .form-container {
+            backdrop-filter: blur(8px);
+            background: rgba(255, 255, 255, 0.92);
+            transition: all 0.3s ease;
+        }
+
+        .form-container:hover {
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+
+<body class="flex flex-col items-center justify-center py-8 font-sans custom-bg">
+
+    <!-- Navigation Bar -->
+    <nav class="fixed top-0 left-0 right-0 z-50 w-full bg-white shadow-md bg-opacity-90">
+        <div class="container mx-auto flex items-center justify-between px-6 py-4">
+            <h1 class="text-2xl font-bold text-teal-600 flex items-center">
+                <i data-lucide="brain" class="mr-2 w-6 h-6"></i>BrainSync
+            </h1>
+            
+            <div class="space-x-6 flex items-center">
+                <a href="/index" class="text-blue-800 hover:text-teal-600 transition duration-300 flex items-center">
+                    <i data-lucide="home" class="mr-1 w-5 h-5"></i>Home
+                </a>
+                <a href="/profile" class="text-gray-800 hover:text-teal-600 transition duration-300 flex items-center">
+                    <i data-lucide="user" class="mr-1 w-5 h-5"></i>Profile
+                </a>
+                <a href="/edit-profile" class="text-gray-800 hover:text-teal-600 transition duration-300 flex items-center">
+                    <i data-lucide="settings" class="mr-1 w-5 h-5"></i>Settings
+                </a>
+                <a href="/about" class="text-gray-800 hover:text-teal-600 transition duration-300 flex items-center">
+                    <i data-lucide="info" class="mr-1 w-5 h-5"></i>About
+                </a>
+                <% if (user && user.role === 'admin') { %>
+                    <a href="/admin/users" class="text-gray-800 hover:text-teal-600 transition duration-300 flex items-center">
+                        <i data-lucide="users" class="mr-1 w-5 h-5"></i>User List
+                    </a>
+                <% } %>
+
+                <!-- Session Dropdown -->
+                <div class="relative group">
+                    <button id="sessionDropdownBtn" class="text-gray-800 hover:text-teal-600 transition duration-300 flex items-center">
+                        <i data-lucide="music" class="mr-1 w-5 h-5"></i>Session
+                    </button>
+                    <div id="sessionDropdownMenu" class="absolute hidden group-hover:block right-0 bg-white shadow-lg rounded-md mt-2 w-48 border">
+                        <a href="/session?time=morning" class="block px-4 py-2 hover:bg-gray-100">Morning</a>
+                        <a href="/session?time=afternoon" class="block px-4 py-2 hover:bg-gray-100">Afternoon</a>
+                        <a href="/session?time=evening" class="block px-4 py-2 hover:bg-gray-100">Evening</a>
+                    </div>
+                </div>
+
+                <a href="/login" class="text-gray-800 hover:text-red-500 transition duration-300 flex items-center">
+                    <i data-lucide="log-out" class="mr-1 w-5 h-5"></i>Logout
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Container -->
+    <div class="flex flex-col items-center justify-center w-full mt-16 px-4">
+        <div class="w-full max-w-3xl p-8 form-container border-2 border-gray-200 rounded-2xl shadow-xl">
+            <h1 class="mb-8 text-4xl font-bold text-center text-transparent bg-gradient-to-r from-teal-500 to-blue-600 bg-clip-text">
+                Edit Profile
+            </h1>
+
+            <!-- Profile Edit Form -->
+            <form action="/edit-profile" method="POST" class="space-y-6">
+                <div class="flex flex-col">
+                    <label for="username" class="text-lg font-medium text-gray-700 mb-2">Username:</label>
+                    <input type="text" id="username" name="username" value="<%= user.username %>" 
+                           class="px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-teal-500 transition-colors duration-200"
+                           required>
+                </div>
+
+                <div class="flex flex-col">
+                    <label for="phone" class="text-lg font-medium text-gray-700 mb-2">Phone:</label>
+                    <input type="tel" id="phone" name="phone" value="<%= user.phone %>" 
+                           class="px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-teal-500 transition-colors duration-200"
+                           pattern="[0-9]{10}" required>
+                </div>
+
+                <div class="flex flex-col">
+                    <label for="location" class="text-lg font-medium text-gray-700 mb-2">Location:</label>
+                    <input type="text" id="location" name="location" value="<%= user.location %>" 
+                           class="px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-teal-500 transition-colors duration-200"
+                           required>
+                </div>
+
+                <div class="flex flex-col">
+                    <label for="gender" class="text-lg font-medium text-gray-700 mb-2">Gender:</label>
+                    <select name="gender" id="gender" 
+                            class="px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-teal-500 transition-colors duration-200"
+                            required>
+                        <option value="Male" <%= user.gender === 'Male' ? 'selected' : '' %>>Male</option>
+                        <option value="Female" <%= user.gender === 'Female' ? 'selected' : '' %>>Female</option>
+                        <option value="Other" <%= user.gender === 'Other' ? 'selected' : '' %>>Other</option>
+                    </select>
+                </div>
+
+                <div class="flex flex-col">
+                    <label for="email" class="text-lg font-medium text-gray-700 mb-2">Email:</label>
+                    <input type="email" id="email" value="<%= user.email %>" 
+                           class="px-4 py-3 bg-gray-100 border-2 border-gray-300 rounded-lg cursor-not-allowed"
+                           disabled>
+                </div>
+
+                <div class="flex flex-col">
+                    <label for="role" class="text-lg font-medium text-gray-700 mb-2">Role:</label>
+                    <input type="text" id="role" value="<%= user.role %>" 
+                           class="px-4 py-3 bg-gray-100 border-2 border-gray-300 rounded-lg cursor-not-allowed"
+                           disabled>
+                </div>
+
+                <div class="flex justify-center mt-8">
+                    <button type="submit" 
+                            class="px-8 py-4 text-lg font-semibold text-white transition-all duration-300 bg-gradient-to-r from-teal-500 to-blue-600 rounded-xl hover:from-teal-600 hover:to-blue-700 hover:shadow-lg">
+                        Save Changes
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Interactive Scripts -->
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // Session Dropdown Logic
+        document.addEventListener("DOMContentLoaded", function() {
+            const dropdownBtn = document.getElementById("sessionDropdownBtn");
+            const dropdownMenu = document.getElementById("sessionDropdownMenu");
+
+            dropdownBtn.addEventListener("click", function(event) {
+                event.stopPropagation();
+                dropdownMenu.classList.toggle("hidden");
+            });
+
+            document.addEventListener("click", function(event) {
+                if (!dropdownBtn.contains(event.target) && !dropdownMenu.contains(event.target)) {
+                    dropdownMenu.classList.add("hidden");
+                }
+            });
+        });
+
+        // GSAP Animations
+        gsap.registerEffect({
+            name: "fadeSlide",
+            effect: (targets, config) => {
+                return gsap.from(targets, {
+                    duration: config.duration || 0.8,
+                    opacity: 0,
+                    y: config.y || 30,
+                    ease: "power4.out"
+                });
+            },
+            defaults: { duration: 0.8 }
+        });
+
+        gsap.effects.fadeSlide(".form-container", { y: 20 });
+    </script>
+
+</body>
+</html>

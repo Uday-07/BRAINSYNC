@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About BrainSync</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+
+    <style>
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+    </style>
+</head>
+
+<body class="min-h-screen font-sans" style="background: linear-gradient(to bottom right, rgba(30, 58, 138, 0.85), rgba(49, 46, 129, 0.85), rgba(147, 51, 234, 0.85)), url('https://images.unsplash.com/photo-1629904853893-c2c8981a1dc5?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80'); background-size: cover; background-position: center;">
+    <!-- Particle Background -->
+    <div class="fixed inset-0 z-0 opacity-20">
+        <div class="absolute w-32 h-32 bg-purple-500 rounded-full blur-xl animate-float" style="top:20%; left:10%"></div>
+        <div class="absolute w-24 h-24 bg-cyan-500 rounded-full blur-xl animate-float" style="top:70%; left:80%"></div>
+    </div>
+
+    <!-- Glass Navbar -->
+    <nav class="fixed top-0 z-50 w-full backdrop-blur-lg bg-white/5 border-b border-white/10">
+        <div class="container mx-auto px-6 py-3 flex items-center justify-between">
+            <h1 class="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
+                <i data-lucide="brain" class="inline-block mr-2"></i>BrainSync
+            </h1>
+            <div class="flex items-center gap-6">
+                <a href="/index" class="text-gray-300 hover:text-white transition-all flex items-center gap-1">
+                    <i data-lucide="home" class="w-5 h-5"></i>Home
+                </a>
+                <a href="/profile" class="text-gray-300 hover:text-white transition-all flex items-center gap-1">
+                    <i data-lucide="user" class="w-5 h-5"></i>Profile
+                </a>
+                <div class="relative group">
+                    <button class="text-gray-300 hover:text-white transition-all flex items-center gap-1">
+                        <i data-lucide="settings" class="w-5 h-5"></i>Settings
+                    </button>
+                    <div class="absolute hidden group-hover:block right-0 mt-2 w-48 bg-white/5 backdrop-blur-lg border border-white/10 rounded-lg p-2">
+                        <a href="/edit-profile" class="block px-4 py-2 hover:bg-white/5 rounded-md">Edit Profile</a>
+                    </div>
+                </div>
+                <a href="/logout" class="text-gray-300 hover:text-red-400 transition-all flex items-center gap-1">
+                    <i data-lucide="log-out" class="w-5 h-5"></i>Logout
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative z-10 w-full px-8 py-36 mt-16 text-center">
+        <div class="max-w-4xl mx-auto backdrop-blur-lg bg-white/5 p-12 rounded-3xl border border-white/10 shadow-2xl">
+            <h1 class="mb-6 text-6xl font-extrabold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
+                About BrainSync
+            </h1>
+            <p class="text-xl text-gray-200 max-w-3xl mx-auto leading-relaxed">
+                BrainSync is an **AI-powered mindfulness platform** designed to enhance cognitive abilities, improve mental well-being, and provide personalized meditation experiences.  
+                Our cutting-edge technology integrates **mood analysis**, **neuroscience-backed exercises**, and **real-time emotional tracking** to help you achieve **mental clarity and focus**.
+            </p>
+        </div>
+    </section>
+
+    <!-- Our Mission -->
+    <section class="relative z-10 container mx-auto px-4 py-20">
+        <div class="max-w-5xl mx-auto backdrop-blur-lg bg-white/5 p-12 rounded-3xl border border-white/10">
+            <h2 class="text-4xl font-bold text-center mb-8 bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
+                Our Mission
+            </h2>
+            <p class="text-lg text-gray-300 text-center leading-relaxed">
+                BrainSync is on a mission to revolutionize mental health by leveraging **AI-driven techniques** to improve **concentration, emotional resilience, and overall cognitive function**.  
+                Our platform empowers users to take control of their **mental fitness** through adaptive training, real-time insights, and interactive meditation sessions.
+            </p>
+        </div>
+    </section>
+
+    <!-- AI Cognitive Training -->
+    <section class="relative z-10 container mx-auto px-4 py-20">
+        <div class="max-w-5xl mx-auto backdrop-blur-lg bg-white/5 p-12 rounded-3xl border border-white/10">
+            <h2 class="text-4xl font-bold text-center mb-8 bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
+                AI Cognitive Training
+            </h2>
+            <p class="text-lg text-gray-300 text-center leading-relaxed">
+                BrainSync’s **AI-powered cognitive training programs** are designed to boost **memory, problem-solving skills, and focus**.  
+                Our system continuously adapts to your **mental performance**, providing **customized brain exercises** that help strengthen neural connections and improve **mental agility**.
+            </p>
+        </div>
+    </section>
+
+    <!-- Mindfulness Ecosystem -->
+    <section class="relative z-10 container mx-auto px-4 py-20">
+        <div class="max-w-5xl mx-auto backdrop-blur-lg bg-white/5 p-12 rounded-3xl border border-white/10">
+            <h2 class="text-4xl font-bold text-center mb-8 bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
+                Mindfulness Ecosystem
+            </h2>
+            <p class="text-lg text-gray-300 text-center leading-relaxed">
+                Our advanced **Mindfulness Ecosystem** combines AI with **personalized meditation techniques** to help users achieve a balanced and stress-free life.  
+                Featuring **biofeedback integration**, our platform ensures that each meditation session is **tailored** to your **current emotional state**, providing the **best possible experience**.
+            </p>
+        </div>
+    </section>
+
+    <!-- GSAP Animations -->
+    <script>
+        gsap.from("section", {
+            duration: 0.8,
+            y: 40,
+            opacity: 0,
+            stagger: 0.3,
+            ease: "power3.out"
+        });
+
+        document.addEventListener("DOMContentLoaded", () => {
+            lucide.createIcons();
+        });
+    </script>
+</body>
+</html>

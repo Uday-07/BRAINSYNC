@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= sessionTime %> Meditation</title>
+    
+    <!-- Dependencies -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@0.263.1"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r146/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+
+    <style>
+        body {
+            margin: 0;
+            overflow-x: hidden;
+            font-family: 'Poppins', sans-serif;
+            background: url('https://img.lovepik.com/background/20211021/large/lovepik-artificial-intelligence-brain-technology-background-image_400608492.jpg') no-repeat center center fixed;
+            background-size: cover;
+            height: 100vh;
+        }
+
+        canvas#bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+
+        .content-container {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+    </style>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' }
+                        }
+                    },
+                    animation: {
+                        float: 'float 3s ease-in-out infinite'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <canvas id="bg"></canvas>
+    
+    <div class="content-container">
+        <!-- Navbar -->
+        <nav class="fixed top-0 z-50 w-full backdrop-blur-lg bg-white/5 border-b border-white/10">
+            <div class="container mx-auto px-6 py-4 flex items-center justify-between">
+                <h1 class="text-2xl font-bold text-cyan-300 flex items-center">
+                    <i data-lucide="brain" class="w-6 h-6 mr-2"></i> BrainSync
+                </h1>
+                <div class="flex space-x-4">
+                    <a href="/index" class="text-white hover:text-cyan-400 transition">Home</a>
+                    <a href="/profile" class="text-white hover:text-cyan-400 transition">Profile</a>
+                    <a href="/login" class="text-red-400 hover:text-red-600 transition">Logout</a>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Meditation Section -->
+        <div class="relative z-10 mt-32 text-center">
+            <h1 class="text-5xl font-bold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
+                <%= sessionTime %> Meditation
+            </h1>
+            <p class="mt-4 text-lg text-gray-300">Select a song and start your meditation session.</p>
+
+            <!-- Song Selection -->
+            <div class="mt-8 p-6 bg-white/10 backdrop-blur-sm rounded-xl border border-white/20 max-w-2xl mx-auto">
+                <label for="songSelect" class="block text-lg font-semibold text-white">Choose a Song:</label>
+                <select id="songSelect" class="mt-4 px-6 py-3 bg-white/20 border border-white/30 rounded-lg text-black w-full">
+                    <% if (sessionTime === 'morning') { %>
+                        <option value="/music/morning1.mp3">Morning Song 1</option>
+                        <option value="/music/morning2.mp3">Morning Song 2</option>
+                        <option value="/music/morning3.mp3">Morning Song 3</option>
+                    <% } else if (sessionTime === 'afternoon') { %>
+                        <option value="/music/afternoon1.mp3">Afternoon Song 1</option>
+                        <option value="/music/afternoon2.mp3">Afternoon Song 2</option>
+                        <option value="/music/afternoon3.mp3">Afternoon Song 3</option>
+                    <% } else { %>
+                        <option value="/music/evening1.mp3">Evening Song 1</option>
+                        <option value="/music/evening2.mp3">Evening Song 2</option>
+                        <option value="/music/evening3.mp3">Evening Song 3</option>
+                    <% } %>
+                </select>
+
+                <!-- Music Player -->
+                <audio id="audioPlayer" controls class="mt-6 w-full">
+                    <source id="audioSource" src="/music/morning1.mp3" type="audio/mp3">
+                    Your browser does not support the audio element.
+                </audio>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Three.js Configuration
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ 
+            canvas: document.getElementById('bg'),
+            alpha: true,
+            antialias: true
+        });
+
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(window.devicePixelRatio);
+
+        // Lighting Configuration
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+        scene.add(ambientLight);
+        const pointLight = new THREE.PointLight(0xffffff, 1, 100);
+        pointLight.position.set(10, 10, 10);
+        scene.add(pointLight);
+
+        // Particle System
+        const particlesGeometry = new THREE.BufferGeometry();
+        const particlesCount = 1500;
+        const posArray = new Float32Array(particlesCount * 3);
+        
+        for(let i = 0; i < particlesCount * 3; i++) {
+            posArray[i] = (Math.random() - 0.5) * 10;
+        }
+
+        particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+        
+        const particlesMaterial = new THREE.PointsMaterial({
+            size: 0.1,
+            color: 0x87CEEB,
+            transparent: true,
+            opacity: 0.8,
+            blending: THREE.AdditiveBlending
+        });
+
+        const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
+        scene.add(particlesMesh);
+
+        camera.position.z = 5;
+
+        // Animation Loop
+        function animate() {
+            requestAnimationFrame(animate);
+            particlesMesh.rotation.x += 0.001;
+            particlesMesh.rotation.y += 0.0015;
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        // Song Selection Handler
+        document.getElementById('songSelect').addEventListener('change', function() {
+            const audioPlayer = document.getElementById('audioPlayer');
+            const audioSource = document.getElementById('audioSource');
+            
+            audioSource.src = this.value;
+            audioPlayer.load();
+            audioPlayer.play();
+        });
+
+        // Resize Handler
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth/window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        // Initialize Icons
+        document.addEventListener("DOMContentLoaded", () => {
+            lucide.createIcons();
+        });
+    </script>
+</body>
+</html>

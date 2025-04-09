@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BrainSync - Meditation Plan</title>
+    <script src="https://kit.fontawesome.com/YOUR_KIT_ID.js" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        .fade-in {
+            animation: fadeIn 1.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        body {
+            background: url('https://img.lovepik.com/background/20211021/large/lovepik-artificial-intelligence-brain-technology-background-image_400608492.jpg') no-repeat center center fixed;
+            background-size: cover;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f8f8f8;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body class="flex flex-col items-center justify-center min-h-screen py-8 font-sans bg-opacity-80 fade-in">
+
+    <!-- Navbar -->
+    <nav class="fixed top-0 left-0 right-0 z-50 w-full bg-white shadow-md bg-opacity-90">
+        <div class="container mx-auto flex items-center justify-between px-6 py-4">
+            <!-- Brand -->
+            <h1 class="text-2xl font-bold text-teal-600 flex items-center">
+                <i class="fa-solid fa-brain mr-2" style="color: #FF5733;"></i> BrainSync
+            </h1>
+    
+            <!-- Navigation Links -->
+            <div class="space-x-6 flex items-center">
+                <a href="/index" class="text-blue-800 hover:text-teal-600 transition duration-300">
+                    <i class="fa-solid fa-house mr-1"></i> Home
+                </a>
+                <a href="/profile" class="text-gray-800 hover:text-teal-600 transition duration-300">
+                    <i class="fa-solid fa-user mr-1"></i> Profile
+                </a>
+                <a href="/edit-profile" class="text-gray-800 hover:text-teal-600 transition duration-300">
+                    <i class="fa-solid fa-gear mr-1"></i> Settings
+                </a>
+                <a href="/about" class="text-gray-800 hover:text-teal-600 transition duration-300">
+                    <i class="fa-solid fa-info-circle mr-1"></i> About
+                </a>
+    
+                <!-- Sessions Dropdown -->
+                <div class="relative group">
+                    <button id="sessionDropdownBtn" class="text-gray-800 hover:text-teal-600 transition duration-300">
+                        <i class="fa-solid fa-music mr-1"></i> Session
+                    </button>
+                    <div id="sessionDropdownMenu" class="absolute hidden group-hover:block right-0 bg-white shadow-lg rounded-md mt-2 w-48 border">
+                        <a href="/session?time=morning" class="block px-4 py-2 hover:bg-gray-200">Morning</a>
+                        <a href="/session?time=afternoon" class="block px-4 py-2 hover:bg-gray-200">Afternoon</a>
+                        <a href="/session?time=evening" class="block px-4 py-2 hover:bg-gray-200">Evening</a>
+                    </div>
+                </div>
+    
+                <a href="/login" class="text-gray-800 hover:text-red-500 transition duration-300">
+                    <i class="fa-solid fa-right-from-bracket mr-1"></i> Logout
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="w-full max-w-4xl p-8 mt-20 bg-white bg-opacity-90 rounded-lg shadow-xl transform hover:scale-105 transition duration-500">
+        <h2 class="mb-6 text-3xl font-bold text-center text-gray-900">Your Meditation Plan</h2>
+        <p class="text-lg text-gray-800"><i class="fa-solid fa-heart mr-2"></i> Stress Level: <span class="font-semibold"><%= stressLevel %></span></p>
+        <p class="text-lg text-gray-800"><i class="fa-solid fa-clock mr-2"></i> Preferred Time: <span class="font-semibold"><%= meditationTime %></span></p>
+
+        <h3 class="mt-6 text-xl font-semibold text-gray-900">Recommended Daily Meditation Plan:</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Day</th>
+                    <th>Activity</th>
+                </tr>
+            </thead>
+            <tbody>
+                <%- meditationPlan %>
+            </tbody>
+        </table>
+        
+        <a href="/" class="block w-full mt-6 text-center text-white bg-teal-600 py-3 rounded-md hover:bg-teal-700 transition">
+            <i class="fa-solid fa-arrow-left mr-2"></i> Back to Home
+        </a>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const dropdownBtn = document.getElementById("sessionDropdownBtn");
+            const dropdownMenu = document.getElementById("sessionDropdownMenu");
+    
+            dropdownBtn.addEventListener("click", function (event) {
+                event.stopPropagation(); // Prevent click from bubbling up
+                dropdownMenu.classList.toggle("hidden");
+            });
+    
+            document.addEventListener("click", function (event) {
+                if (!dropdownBtn.contains(event.target) && !dropdownMenu.contains(event.target)) {
+                    dropdownMenu.classList.add("hidden");
+                }
+            });
+        });
+    </script>
+</body>
+</html>

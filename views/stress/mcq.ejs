@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MCQ Assessment</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://kit.fontawesome.com/your-kit-code.js" crossorigin="anonymous"></script>
+    <style>
+        /* Background Image */
+        body {
+            background-image: url('https://img.lovepik.com/background/20211021/large/lovepik-artificial-intelligence-brain-technology-background-image_400608492.jpg'); /* Replace with your image */
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+        }
+
+        /* Semi-transparent White Overlay */
+        .bg-overlay {
+            background: rgba(255, 255, 255, 0.85); /* Adjust for readability */
+            backdrop-filter: blur(6px);
+        }
+
+        /* Animations */
+        @keyframes fade-in-up {
+            0% { opacity: 0; transform: translateY(20px) rotateX(-15deg); }
+            100% { opacity: 1; transform: translateY(0) rotateX(0); }
+        }
+
+        @keyframes gradient-flow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .animate-gradient-flow {
+            background-size: 200% auto;
+            animation: gradient-flow 3s infinite alternate;
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen">
+
+    <!-- Navigation Bar -->
+    <nav class="fixed top-0 left-0 right-0 z-50 w-full bg-white/80 shadow-md backdrop-blur-sm transition-all duration-300 hover:bg-white/90">
+        <div class="container mx-auto flex items-center justify-between px-6 py-4">
+            <h1 class="text-2xl font-bold text-teal-600 flex items-center">
+                <i class="fa-solid fa-brain mr-2 transition-transform duration-300 hover:scale-110 hover:rotate-[15deg]" style="color: #FF5733;"></i> 
+                <span class="hover:text-teal-700 transition-colors">BrainSync</span>
+            </h1>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="bg-overlay p-8 rounded-lg shadow-lg w-full max-w-3xl my-20 transform transition-all duration-500 animate-fade-in-up hover:shadow-xl hover:-translate-y-1">
+        <h2 class="text-2xl font-semibold text-gray-700 mb-4 animate-pulse hover:animate-none">
+            Follow-Up Questions
+        </h2>
+        <form action="/stress/mcq" method="POST">
+            <div class="mb-6 space-y-6">
+                <div>
+                    <label class="block text-gray-600 font-medium mb-2">Do you experience headaches frequently?</label>
+                    <select name="responses[]" class="w-full p-2 border rounded-lg bg-gray-50 transition-all duration-300 hover:border-teal-400 focus:ring-2 focus:ring-teal-500">
+                        <option value="Never">Never</option>
+                        <option value="Sometimes">Sometimes</option>
+                        <option value="Often">Often</option>
+                        <option value="Always">Always</option>
+                    </select>
+                </div>
+            </div>
+            <button type="submit" class="mt-6 w-full bg-gradient-to-r from-blue-500 via-teal-500 to-blue-500 text-white p-3 rounded-lg transition-all duration-500 transform hover:scale-[1.02] hover:shadow-lg active:scale-95 animate-gradient-flow">
+                Submit
+            </button>
+        </form>
+    </div>
+
+</body>
+</html>
